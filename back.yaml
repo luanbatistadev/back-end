@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Amor de 4 Patas
+  description: Amor de 4 Patas
+  version: 0.0.1
+  termsOfService: http://amor4patas.com/terms
+  contact:
+    name: Amor de 4 Patas
+    email: luan@gmail.com
+    url: http://amor4patas.com
+  license: 
+    name: 'MIT License'
+    url: 'http://amor4patas.com/license'
+externlDocs: 
+  description: 'Find more info here'
+  url: 'http://amor4patas.com/docs'
+servers:
+  - url: http://amor4patas.com/api
+    description: Amor de 4 Patas
+tags:
+  - name: Raças
+    description: Tudo sobre as raças
+paths:
+  /racas: 
+    get:
+      tags: 
+        - Raças
+      summary: Lista de Raças
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/racas'
+        '400':
+          description: Erro
+          content:
+            application/json:
+              example: Not Found
+  /raca/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Id da Raça
+    delete: 
+      tags: 
+        - Raças
+      summary: Deleta Raça
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              example: Deletado com sucesso
+        '400':
+          description: Erro
+          content:
+            application/json:
+              example: Not Found
+    put: 
+      tags: 
+        - Raças
+      summary: Atualiza Raça
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/raca?=id'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/raca'
+        '400':
+          description: Erro
+          content:
+            application/json:
+              example: Not Found
+    get:
+      tags: 
+        - Raças
+      summary: Raça
+      responses:
+        '200':
+          description: Sucesso
+          
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/raca'
+        '400':
+          description: Raça não encontrada!
+          content:
+            application/json:
+              example: Not Found
+  /raca:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Id da Raça
+    post:
+      tags: 
+        - Raças
+      summary: Cria um nova raça
+      requestBody:
+        schema:
+          type: object
+          properties:
+            nome: 
+              type: string
+              example: 'Poodle'
+            descricao:
+              type: string
+              example: 'Raça de cachorro'
+            temperamento:
+              type: string
+              example: 'Calmo'
+            idade:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/raca'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/raca'
+        '409':
+          description: Grupo não encontrado!
+          content:
+            application/json:
+              example: Conflits
+components:
+  schemas:
+    raca:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+    raca?=id:
+      type: object
+      properties:
+        nome:
+          type: string
+        descricao:
+          type: string
+    racas:
+      type: array
+      items:
+        $ref: '#/components/schemas/raca'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
